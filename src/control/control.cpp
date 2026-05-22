@@ -14,7 +14,7 @@ void executeCommand(CommandType cmd) {
         case CMD_LEFT:
             turnLeft(150);
             break;
-        case CMD_RIGHT:
+        case CMD_RIGHT: 
             turnRight(150);
             break;
         case CMD_STOP:

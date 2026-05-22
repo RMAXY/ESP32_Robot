@@ -42,6 +42,8 @@ void loop() {
     updateBLE();
     updateLift();
 
+    //moveForward(150);
+
     // 核心：收到蓝牙命令 → 解析 → 执行
     handleIncomingCommand();
 

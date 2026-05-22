@@ -7,6 +7,10 @@
 #define MOTOR_RIGHT_IN1 21
 #define MOTOR_RIGHT_IN2 22
 
+// 电机使能（PWM调速）
+#define MOTOR_LEFT_EN   25
+#define MOTOR_RIGHT_EN  26
+
 // ========== 吊装 ==========
 #define LIFT_IN1        23
 #define LIFT_IN2        5
