@@ -42,10 +42,12 @@ void loop() {
     updateBLE();
     updateLift();
 
-    //moveForward(150);
-
     // 核心：收到蓝牙命令 → 解析 → 执行
     handleIncomingCommand();
 
-    // 之后可在这里加入自动避障、循迹等
+    // 持续执行当前模式的控制逻辑：
+    // 1) 遥控模式：动作由蓝牙命令驱动
+    // 2) 循迹模式：传感器持续驱动移动
+    // 3) 无论哪种模式，前方避障始终启用
+    updateRobotControl();
 }

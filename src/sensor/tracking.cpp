@@ -2,17 +2,19 @@
 #include "tracking.h"
 #include "../config/pins.h"
 
+static bool isDetected(int pin) {
+    return digitalRead(pin) == LOW;
+}
+
 void initTracking() {
-    pinMode(TRACKING_LEFT, INPUT);
-    pinMode(TRACKING_RIGHT, INPUT);
+    pinMode(TRACKING_LEFT, INPUT_PULLUP);
+    pinMode(TRACKING_RIGHT, INPUT_PULLUP);
 }
 
 bool isLeftDetected() {
-    // TODO: 读取左循迹传感器
-    return false;
+    return isDetected(TRACKING_LEFT);
 }
 
 bool isRightDetected() {
-    // TODO: 读取右循迹传感器
-    return false;
+    return isDetected(TRACKING_RIGHT);
 }

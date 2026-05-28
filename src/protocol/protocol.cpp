@@ -2,7 +2,7 @@
 #include "protocol.h"
 
 CommandType parseCommand(const String &json) {
-    StaticJsonDocument<128> doc;
+    JsonDocument doc;
     DeserializationError error = deserializeJson(doc, json);
     if (error) {
         return CMD_NONE;
@@ -16,6 +16,8 @@ CommandType parseCommand(const String &json) {
     if (cmd == "S")      return CMD_STOP;
     if (cmd == "UP")     return CMD_LIFT_UP;
     if (cmd == "DOWN")   return CMD_LIFT_DOWN;
+    if (cmd == "REMOTE" || cmd == "MODE_REMOTE") return CMD_SET_REMOTE_MODE;
+    if (cmd == "TRACK" || cmd == "TRACKING" || cmd == "MODE_TRACK") return CMD_SET_TRACKING_MODE;
 
     return CMD_NONE;
 }

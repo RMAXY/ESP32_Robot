@@ -11,7 +11,9 @@ enum CommandType {
     CMD_RIGHT,
     CMD_STOP,
     CMD_LIFT_UP,
-    CMD_LIFT_DOWN
+    CMD_LIFT_DOWN,
+    CMD_SET_REMOTE_MODE,
+    CMD_SET_TRACKING_MODE
 };
 
 CommandType parseCommand(const String &json);
