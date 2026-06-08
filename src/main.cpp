@@ -25,6 +25,7 @@ int myFunction(int x, int y) {
 #include "sensor/tracking.h"
 #include "ble/ble_server.h"
 #include "control/controller.h"
+#include "protocol/protocol.h"
 
 void setup() {
     Serial.begin(115200);
@@ -39,6 +40,9 @@ void setup() {
 }
 
 void loop() {
+    static unsigned long lastStatusReportMs = 0;
+    const unsigned long statusIntervalMs = 200;
+
     updateBLE();
     updateLift();
 
@@ -50,4 +54,27 @@ void loop() {
     // 2) 循迹模式：传感器持续驱动移动
     // 3) 无论哪种模式，前方避障始终启用
     updateRobotControl();
+
+    unsigned long now = millis();
+    if (now - lastStatusReportMs >= statusIntervalMs) {
+        lastStatusReportMs = now;
+
+        float distance = getDistance();
+        bool limitTop = digitalRead(LIMIT_TOP) == LOW;
+        bool limitBottom = digitalRead(LIMIT_BOTTOM) == LOW;
+        String liftState = getLiftState();
+        String statusJson = buildStatusJson(
+            (float)getMotorSpeed(),
+            isMotorRunning(),
+            distance,
+            liftState,
+            limitTop,
+            limitBottom,
+            isBLEConnected()
+        );
+
+        if (isBLEConnected()) {
+            sendStatus(statusJson);
+        }
+    }
 }

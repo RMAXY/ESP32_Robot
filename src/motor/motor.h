@@ -7,5 +7,7 @@ void moveBackward(int speed);
 void turnLeft(int speed);
 void turnRight(int speed);
 void stopMotor();
+int getMotorSpeed();
+bool isMotorRunning();
 
 #endif

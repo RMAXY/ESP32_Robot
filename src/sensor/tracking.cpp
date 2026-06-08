@@ -9,12 +9,31 @@ static bool isDetected(int pin) {
 void initTracking() {
     pinMode(TRACKING_LEFT, INPUT_PULLUP);
     pinMode(TRACKING_RIGHT, INPUT_PULLUP);
+    Serial.println("Tracking sensor initialized.");
 }
 
 bool isLeftDetected() {
-    return isDetected(TRACKING_LEFT);
+    static bool lastDetected = false;
+    bool detected = isDetected(TRACKING_LEFT);
+
+    if (detected != lastDetected) {
+        Serial.print("Tracking left: ");
+        Serial.println(detected ? "detected" : "clear");
+        lastDetected = detected;
+    }
+
+    return detected;
 }
 
 bool isRightDetected() {
-    return isDetected(TRACKING_RIGHT);
+    static bool lastDetected = false;
+    bool detected = isDetected(TRACKING_RIGHT);
+
+    if (detected != lastDetected) {
+        Serial.print("Tracking right: ");
+        Serial.println(detected ? "detected" : "clear");
+        lastDetected = detected;
+    }
+
+    return detected;
 }

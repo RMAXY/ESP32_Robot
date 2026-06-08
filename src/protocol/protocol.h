@@ -17,5 +17,6 @@ enum CommandType {
 };
 
 CommandType parseCommand(const String &json);
+String buildStatusJson(float speed, bool running, float distance, const String &liftState, bool limitTop, bool limitBottom, bool connected);
 
 #endif
