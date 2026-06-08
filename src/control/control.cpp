@@ -8,6 +8,13 @@
 
 static RobotMode currentMode = MODE_REMOTE;
 static const float OBSTACLE_DISTANCE_CM = 20.0f;
+static int currentDriveSpeed = DEFAULT_SPEED;
+
+static int clampDriveSpeed(int speed) {
+    if (speed < 0) return 0;
+    if (speed > MAX_MOTOR_PWM) return MAX_MOTOR_PWM;
+    return speed;
+}
 
 static bool obstacleDetected() {
     float distance = getDistance();
@@ -20,7 +27,7 @@ static bool tryMoveForward() {
         return false;
     }
 
-    moveForward(DEFAULT_SPEED);
+    moveForward(currentDriveSpeed);
     return true;
 }
 
@@ -41,17 +48,17 @@ void executeCommand(CommandType cmd) {
             break;
         case CMD_BACKWARD:
             if (currentMode == MODE_REMOTE) {
-                moveBackward(DEFAULT_SPEED);
+                moveBackward(currentDriveSpeed);
             }
             break;
         case CMD_LEFT:
             if (currentMode == MODE_REMOTE) {
-                turnLeft(DEFAULT_SPEED);
+                turnLeft(currentDriveSpeed);
             }
             break;
         case CMD_RIGHT:
             if (currentMode == MODE_REMOTE) {
-                turnRight(DEFAULT_SPEED);
+                turnRight(currentDriveSpeed);
             }
             break;
         case CMD_STOP:
@@ -80,11 +87,11 @@ void updateRobotControl() {
         bool rightDetected = isRightDetected();
 
         if (leftDetected && rightDetected) {
-            moveForward(DEFAULT_SPEED);
+            moveForward(currentDriveSpeed);
         } else if (leftDetected && !rightDetected) {
-            turnLeft(DEFAULT_SPEED);
+            turnLeft(currentDriveSpeed);
         } else if (!leftDetected && rightDetected) {
-            turnRight(DEFAULT_SPEED);
+            turnRight(currentDriveSpeed);
         } else {
             stopMotor();
         }
@@ -94,7 +101,13 @@ void updateRobotControl() {
 void handleIncomingCommand() {
     if (hasNewCommand()) {
         String json = getBLECommand();
-        CommandType cmd = parseCommand(json);
-        executeCommand(cmd);
+        ParsedCommand parsed = parseCommand(json);
+
+        if (parsed.type == CMD_SET_SPEED) {
+            currentDriveSpeed = clampDriveSpeed(parsed.speed);
+            return;
+        }
+
+        executeCommand(parsed.type);
     }
 }

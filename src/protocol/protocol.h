@@ -13,10 +13,16 @@ enum CommandType {
     CMD_LIFT_UP,
     CMD_LIFT_DOWN,
     CMD_SET_REMOTE_MODE,
-    CMD_SET_TRACKING_MODE
+    CMD_SET_TRACKING_MODE,
+    CMD_SET_SPEED
 };
 
-CommandType parseCommand(const String &json);
+struct ParsedCommand {
+    CommandType type;
+    int speed;
+};
+
+ParsedCommand parseCommand(const String &json);
 String buildStatusJson(float speed, bool running, float distance, const String &liftState, bool limitTop, bool limitBottom, bool connected);
 
 #endif

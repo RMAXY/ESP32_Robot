@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "../config/config.h"
 #include "../config/pins.h"
 #include "motor.h"
 
@@ -9,6 +10,12 @@
 static const int leftChannel  = 0;   // 左电机 PWM 通道
 static const int rightChannel = 1;   // 右电机 PWM 通道
 static int currentSpeed = 0;
+
+static int clampMotorSpeed(int speed) {
+    if (speed < 0) return 0;
+    if (speed > MAX_MOTOR_PWM) return MAX_MOTOR_PWM;
+    return speed;
+}
 
 void initMotor() {
     // 方向引脚
@@ -29,6 +36,7 @@ void initMotor() {
 }
 
 void moveForward(int speed) {
+    speed = clampMotorSpeed(speed);
     currentSpeed = speed;
     digitalWrite(MOTOR_LEFT_IN1, HIGH);
     digitalWrite(MOTOR_LEFT_IN2, LOW);
@@ -40,6 +48,7 @@ void moveForward(int speed) {
 }
 
 void moveBackward(int speed) {
+    speed = clampMotorSpeed(speed);
     currentSpeed = speed;
     digitalWrite(MOTOR_LEFT_IN1, LOW);
     digitalWrite(MOTOR_LEFT_IN2, HIGH);
@@ -51,6 +60,7 @@ void moveBackward(int speed) {
 }
 
 void turnLeft(int speed) {
+    speed = clampMotorSpeed(speed);
     currentSpeed = speed;
     // 左转：左轮后退，右轮前进
     digitalWrite(MOTOR_LEFT_IN1, LOW);
@@ -63,6 +73,7 @@ void turnLeft(int speed) {
 }
 
 void turnRight(int speed) {
+    speed = clampMotorSpeed(speed);
     currentSpeed = speed;
     // 右转：左轮前进，右轮后退
     digitalWrite(MOTOR_LEFT_IN1, HIGH);
