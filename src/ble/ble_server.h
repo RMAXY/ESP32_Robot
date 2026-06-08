@@ -5,6 +5,8 @@
 
 void initBLE();
 void updateBLE();
+void sendStatus(const String &json);
+bool isBLEConnected();
 bool hasNewCommand();
 String getBLECommand();
 
