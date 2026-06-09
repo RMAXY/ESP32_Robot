@@ -34,9 +34,13 @@ float getDistance() {
     }
 
     float distance = (pulseDuration * 0.0343f) / 2.0f;
+
+    if (!lastEchoValid) {
+        Serial.println("Ultrasonic echo recovered.");
+    }
     lastEchoValid = true;
 
-    if (abs(distance - lastDistance) >= 1.0f || millis() - lastDebugMs >= 1000UL || lastDistance < 0.0f) {
+    if (abs(distance - lastDistance) >= 5.0f || millis() - lastDebugMs >= 5000UL || lastDistance < 0.0f) {
         Serial.print("Ultrasonic distance: ");
         Serial.print(distance);
         Serial.println(" cm");

@@ -6,7 +6,7 @@
 #define ROBOT_TRACK_WIDTH  150.0
 
 // 默认运动速度 (0-255)
-#define DEFAULT_SPEED      120
+#define DEFAULT_SPEED      60
 
 // TB6612 驱动电压与 TT 减速电机额定电压
 #define MOTOR_SUPPLY_VOLTAGE 12.1f

@@ -14,12 +14,14 @@ void initTracking() {
 
 bool isLeftDetected() {
     static bool lastDetected = false;
+    static unsigned long lastDebugMs = 0;
     bool detected = isDetected(TRACKING_LEFT);
 
-    if (detected != lastDetected) {
+    if (detected != lastDetected || (millis() - lastDebugMs) >= 500UL) {
         Serial.print("Tracking left: ");
         Serial.println(detected ? "detected" : "clear");
         lastDetected = detected;
+        lastDebugMs = millis();
     }
 
     return detected;
@@ -27,12 +29,14 @@ bool isLeftDetected() {
 
 bool isRightDetected() {
     static bool lastDetected = false;
+    static unsigned long lastDebugMs = 0;
     bool detected = isDetected(TRACKING_RIGHT);
 
-    if (detected != lastDetected) {
+    if (detected != lastDetected || (millis() - lastDebugMs) >= 500UL) {
         Serial.print("Tracking right: ");
         Serial.println(detected ? "detected" : "clear");
         lastDetected = detected;
+        lastDebugMs = millis();
     }
 
     return detected;

@@ -48,6 +48,7 @@ class ServerCallbacks : public BLEServerCallbacks {
 void initBLE() {
     // 1. 初始化BLE设备，这里的名称 "ESP32_Robot" 会出现在手机搜索列表里
     BLEDevice::init("ESP32_Robot");
+    BLEDevice::setMTU(512); // 将最大传输单元扩展到 512 字节
     
     // 2. 创建BLE服务器
     gServer = BLEDevice::createServer();
