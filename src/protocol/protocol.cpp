@@ -3,13 +3,22 @@
 #include "../config/config.h"
 
 ParsedCommand parseCommand(const String &json) {
-    ParsedCommand result = {CMD_NONE, DEFAULT_SPEED};
+    // 初始化时，默认 route 为空字符串
+    ParsedCommand result = {CMD_NONE, DEFAULT_SPEED, ""}; 
     JsonDocument doc;
     DeserializationError error = deserializeJson(doc, json);
     if (error) {
         return result;
     }
 
+    // 👈 核心重构：优先拦截并解析全局路由指令
+    if (doc.containsKey("Route")) {
+        result.type = CMD_SET_ROUTE;
+        result.route = doc["Route"].as<String>();
+        return result;
+    }
+
+    // 下面是你原有的常规命令解析，保持原样
     String cmd = doc["cmd"];
     if (cmd == "F")      { result.type = CMD_FORWARD; return result; }
     if (cmd == "B")      { result.type = CMD_BACKWARD; return result; }
@@ -20,6 +29,7 @@ ParsedCommand parseCommand(const String &json) {
     if (cmd == "DOWN")   { result.type = CMD_LIFT_DOWN; return result; }
     if (cmd == "REMOTE" || cmd == "MODE_REMOTE") { result.type = CMD_SET_REMOTE_MODE; return result; }
     if (cmd == "TRACK" || cmd == "TRACKING" || cmd == "MODE_TRACK") { result.type = CMD_SET_TRACKING_MODE; return result; }
+    
     if (cmd == "SET_SPEED" || cmd == "SPEED") {
         result.type = CMD_SET_SPEED;
         if (doc["speed"].is<int>()) {
