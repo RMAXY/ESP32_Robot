@@ -2,10 +2,10 @@
 #define PINS_H
 
 // ========== 电机 ==========
-#define MOTOR_LEFT_IN1  19
-#define MOTOR_LEFT_IN2  18
-#define MOTOR_RIGHT_IN1 21
-#define MOTOR_RIGHT_IN2 22
+#define MOTOR_RIGHT_IN1  19
+#define MOTOR_RIGHT_IN2  18
+#define MOTOR_LEFT_IN1   21
+#define MOTOR_LEFT_IN2   22
 
 // 电机使能（PWM调速）
 #define MOTOR_LEFT_EN   25
